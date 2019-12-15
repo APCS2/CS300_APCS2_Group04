@@ -6,82 +6,82 @@ import MangaArray from '../../component/MangaArray/index'
 const dummyMangaList = [
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   },
   {
     id: '111',
-    img: 'https://memestatic.fjcdn.com/pictures/Ernie+and+bert+memes+are+great_355787_7419519.jpg',
-    title: 'Ernie And Bert Meme',
+    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    title: 'Komi san is the best',
     newestChapter: {
-      title: 'Dark Web',
-      id: 69,
-      number: 69
+      title: 'Dark Web 2',
+      id: 2,
+      number: 2
     }
   }
 ]

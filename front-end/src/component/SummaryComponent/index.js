@@ -6,6 +6,9 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Rating from '@material-ui/lab/Rating';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import IconButton from '@material-ui/core/IconButton';
 import { NavLink } from "react-router-dom";
 
 const tableRow = [
@@ -67,6 +70,11 @@ export default function SummaryComponent(props) {
       </Grid>
       <Grid xs={3}>
         <img src={manga.thumbnail} alt={manga.title} className={classes.img}/>
+        <Grid xs={12} container justify="center">
+          <IconButton fullWidth color="primary">
+            <FavoriteIcon fontSize="large" style={{ color: 'red' }}/>
+          </IconButton>
+        </Grid>
       </Grid>
       <Grid container xs={8} direction="row" className={classes.content}>
         <Table className={classes.table} aria-label="simple table">
@@ -97,6 +105,14 @@ export default function SummaryComponent(props) {
                 >
                   {`Chapter ${manga.newestChapter.number}: ${manga.newestChapter.title}`}
                 </NavLink>
+              </TableCell>
+            </TableRow>
+            <TableRow key='rating'>
+              <TableCell align="right" >
+                Rating:
+              </TableCell>
+              <TableCell align="left">
+                <Rating disabled name="half-rating" value={manga.rating} precision={0.5} />
               </TableCell>
             </TableRow>
           </TableBody>

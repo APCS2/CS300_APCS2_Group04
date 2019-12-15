@@ -85,6 +85,7 @@ const dummyManga = {
   id: '111',
   title: 'Komi san is the best',
   author: 'Meme',
+  rating: 3,
   thumbnail: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
   newestChapter: {
     title: 'Dark Web 2',

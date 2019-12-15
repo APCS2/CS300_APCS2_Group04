@@ -52,7 +52,7 @@ export default function TitlebarGridList(props) {
   const { mangaArray, arrayTitle } = props;
   return (
     <div className={classes.mangaArrayContainer}>
-      <GridList cellHeight={200} className={classes.gridList} cols={8}>
+      <GridList cellHeight={180} className={classes.gridList} cols={6}>
         <GridListTile key="Subheader" cols={8} style={{ height: 'auto' }}>
          <ListSubheader component="div">{arrayTitle}</ListSubheader>
         </GridListTile>
