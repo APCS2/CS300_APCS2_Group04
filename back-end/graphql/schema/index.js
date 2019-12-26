@@ -1,35 +1,16 @@
-const { buildSchema } = require('graphql');
+const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
-    interface BaseUser {
-        _id: ID!
-        password: String!
-        mail: String
-        DOB: String
-        gender: String
-        favoriteMangas: [Manga!]
-        role: String
-    }
 
-    type User implements BaseUser {
+    type User {
         _id: ID!
+        username: String!
         password: String!
         mail: String
         DOB: String
         gender: String
         favoriteMangas: [Manga!]
         role: String
-    }
-
-    type Moderator implements BaseUser {
-        _id: ID!
-        password: String!
-        mail: String
-        DOB: String
-        gender: String
-        favoriteMangas: [Manga!]
-        role: String
-        uploadedManga: [Manga!]
     }
 
     type Comment {
@@ -76,11 +57,36 @@ module.exports = buildSchema(`
         index: Int!
         images: [String!]!
     }
+    
+    input CommentInput {
+        userId: ID!
+        mangaId: ID!
+        comment: String!
+    }
+    
+    type CommentSchema {
+        user: User
+        comment: String!        
+    }
+    
+    input RatingInput{
+        userId: ID!
+        mangaId: ID!
+        rating: Int!
+    }
+
+    type RatingSchema{
+        userId: ID!
+        mangaId: ID!
+        rating: Int!
+    }
 
     type RootMutation {
         createUser(userInput: UserInput): User
         uploadManga(mangaInput: MangaInput): Manga
         uploadChapter(mangaId: ID, chapterInput: ChapterInput): Chapter
+        comment(CommentInput: CommentInput): CommentSchema
+        rating(RatingInput: RatingInput): RatingSchema
     }
 
     type RootQuery {
@@ -94,4 +100,4 @@ module.exports = buildSchema(`
         query: RootQuery
         mutation: RootMutation
     }
-`)
+`);
