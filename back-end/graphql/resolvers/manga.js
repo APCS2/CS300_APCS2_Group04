@@ -21,6 +21,32 @@ module.exports = {
       throw err;
     }
   },
+<<<<<<< HEAD
+  uploadManga: async ({ mangaInput }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    let alias = await convertToSlug(mangaInput.title);
+    const existingManga = await Manga.findOne({ alias: alias });
+    if (existingManga) {
+      throw new Error("Manga exists already");
+    }
+    const uploader = await User.findById(req.userId);
+    const manga = new Manga({
+      title: mangaInput.title,
+      categories: [...mangaInput.categories],
+      description: mangaInput.description,
+      status: mangaInput.status,
+      image: mangaInput.image,
+      lastUpdated: new Date().toLocaleString(),
+      alias: await convertToSlug(alias),
+      uploader: uploader
+    });
+    try {
+      uploader.uploadedMangas.push(manga);
+      await uploader.save();
+      let result = await manga.save();
+=======
   uploadManga: async ({ mangaInput }) => {
     try {
       let alias = await convertToSlug(mangaInput.title);
@@ -38,6 +64,7 @@ module.exports = {
         alias: await convertToSlug(alias)
       });
       let result = manga.save();
+>>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
       return result;
     } catch (err) {
       throw err;
