@@ -11,6 +11,12 @@ module.exports = buildSchema(`
         gender: String
         favoriteMangas: [Manga!]
         role: String
+        uploadedMangas: [Manga!]
+    }
+
+    type AuthData {
+        userId: ID!
+        token: String!
     }
 
     type Comment {
@@ -21,6 +27,7 @@ module.exports = buildSchema(`
     type Manga {
         _id: ID!
         title: String!
+        author: String!
         alias: String!
         image: String!
         categories: [String!]
@@ -29,6 +36,7 @@ module.exports = buildSchema(`
         chapters: [Chapter!]
         comments: [Comment!]
         status: Int!
+        uploader: User!
     }
 
     type Chapter {
@@ -46,6 +54,7 @@ module.exports = buildSchema(`
 
     input MangaInput {
         title: String!
+        author: String!
         categories: [String!]
         description: String!
         status: Int!
@@ -82,15 +91,15 @@ module.exports = buildSchema(`
     }
 
     type RootMutation {
-        createUser(userInput: UserInput): User
-        uploadManga(mangaInput: MangaInput): Manga
-        uploadChapter(mangaId: ID, chapterInput: ChapterInput): Chapter
-        comment(CommentInput: CommentInput): CommentSchema
-        rating(RatingInput: RatingInput): RatingSchema
+        createUser(userInput: UserInput): User!
+        uploadManga(mangaInput: MangaInput): Manga!
+        uploadChapter(mangaId: ID, chapterInput: ChapterInput): Chapter!
+        comment(CommentInput: CommentInput): CommentSchema!
+        rating(RatingInput: RatingInput): RatingSchema!
     }
 
     type RootQuery {
-        login(username: String!, password: String!): User!
+        login(username: String!, password: String!): AuthData!
         summary(mangaId: ID!): Manga!
         mangas: [Manga!]!
         readChapter(mangaId: ID!, chapterId: ID!): Chapter!

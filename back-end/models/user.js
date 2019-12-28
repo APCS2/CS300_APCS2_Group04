@@ -8,24 +8,21 @@ const userSchema = new Schema({
   firstName: String,
   lastName: String,
   password: String,
-  DOB: {
-    type: Date
-    //required: true
-  },
-  gender: {
-    type: String
-    //required: true
-  },
+  DOB: Date,
+  gender: String,
   favoriteMangas: [
     {
       type: Schema.Types.ObjectId,
       ref: "Manga"
     }
   ],
-  role: {
-    type: String
-    //required: true
-  }
+  uploadedMangas: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Manga"
+    }
+  ],
+  role: String
 });
 
 module.exports = mongoose.model("User", userSchema);

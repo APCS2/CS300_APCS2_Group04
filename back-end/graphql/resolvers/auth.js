@@ -36,7 +36,11 @@ module.exports = {
       if (!isPasswordRight) {
         throw new Error("Wrong password");
       }
-      const token = jwt.sign({ userId: user.id, email: user.email });
+      const token = await jwt.sign({ userId: existingUsername.id, username: existingUsername.username }, "somesupersecretkey");
+      return {
+        userId: existingUsername.id,
+        token: token
+      }
     } catch (err) {
       throw err;
     }

@@ -21,23 +21,30 @@ module.exports = {
       throw err;
     }
   },
-  uploadManga: async ({ mangaInput }) => {
+  uploadManga: async ({ mangaInput }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    let alias = await convertToSlug(mangaInput.title);
+    const existingManga = await Manga.findOne({ alias: alias });
+    if (existingManga) {
+      throw new Error("Manga exists already");
+    }
+    const uploader = await User.findById(req.userId);
+    const manga = new Manga({
+      title: mangaInput.title,
+      categories: [...mangaInput.categories],
+      description: mangaInput.description,
+      status: mangaInput.status,
+      image: mangaInput.image,
+      lastUpdated: new Date().toLocaleString(),
+      alias: await convertToSlug(alias),
+      uploader: uploader
+    });
     try {
-      let alias = await convertToSlug(mangaInput.title);
-      const existingManga = await Manga.findOne({ alias: alias });
-      if (existingManga) {
-        throw new Error("Manga exists already");
-      }
-      const manga = new Manga({
-        title: mangaInput.title,
-        categories: [...mangaInput.categories],
-        description: mangaInput.description,
-        status: mangaInput.status,
-        image: mangaInput.image,
-        lastUpdated: new Date().toLocaleString(),
-        alias: await convertToSlug(alias)
-      });
-      let result = manga.save();
+      uploader.uploadedMangas.push(manga);
+      await uploader.save();
+      let result = await manga.save();
       return result;
     } catch (err) {
       throw err;
