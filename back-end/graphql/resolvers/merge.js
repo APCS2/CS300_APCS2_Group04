@@ -126,7 +126,7 @@ const transformManga = manga => {
         uploader: user.bind(this, manga.uploader),
         title: manga._doc.title,
         author: manga._doc.author,
-        alias: manga._doc.author,
+        alias: manga._doc.alias,
         categories: manga._doc.categories,
         description: manga._doc.description,
         image: manga._doc.image,

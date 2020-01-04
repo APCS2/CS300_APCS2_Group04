@@ -31,13 +31,13 @@ module.exports = {
       throw err;
     }
   },
-  readChapter: async ({ mangaId, chapterId }) => {
+  readChapter: async ({ aliasManga, index }) => {
     try {
-      const existingManga = await Manga.findById(mangaId);
+      const existingManga = await Manga.find({alias: aliasManga});
       if (!existingManga) {
         throw new Error("Manga does not exist");
       }
-      const existingChapter = await existingManga.chapters.findById(chapterId);
+      const existingChapter = await existingManga.chapters.find({index: index});
       if (!existingChapter) {
         throw new Error("Chapter does not exist");
       }

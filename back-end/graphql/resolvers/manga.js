@@ -12,9 +12,9 @@ const convertToSlug = async title => {
 };
 
 module.exports = {
-  summary: async ({ mangaId }) => {
+  summary: async ({ aliasManga }) => {
     try {
-      const manga = await Manga.findById(mangaId);
+      const manga = await Manga.find({ alias: aliasManga });
       if (!manga) {
         throw new Error("Manga does not exist");
       }

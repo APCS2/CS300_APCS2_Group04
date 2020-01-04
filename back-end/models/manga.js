@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-let path = "./Manga"
 
 const mangaSchema = new Schema({
   title: String,

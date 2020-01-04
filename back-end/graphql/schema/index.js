@@ -102,9 +102,9 @@ module.exports = buildSchema(`
 
     type RootQuery {
         login(username: String!, password: String!): AuthData!
-        summary(mangaId: ID!): Manga!
+        summary(aliasManga: String!): Manga!
         mangas: [Manga!]!
-        readChapter(mangaId: ID!, chapterId: ID!): Chapter!
+        readChapter(aliasManga: String!, index: Int!): Chapter!
     }
 
     schema {
