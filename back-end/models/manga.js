@@ -1,17 +1,15 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+let path = "./Manga"
 
 const mangaSchema = new Schema({
   title: String,
-<<<<<<< HEAD
   author: String,
   uploader: {
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
   alias: String,
   categories: [String],
   description: String,
