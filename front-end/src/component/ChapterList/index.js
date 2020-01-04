@@ -24,7 +24,7 @@ export default function ChapterBar(props) {
   let history = useHistory();
   const { id, chapterId, chapterList } = props;
   const handleChange = event => {
-    history.push(`/manga/${id}/chapter/${event.target.value.id}`)
+    history.push(`/manga/${id}/chapter/${event.target.value._id}`)
   };
 
   return (
@@ -43,7 +43,7 @@ export default function ChapterBar(props) {
               </MenuItem>
               {
                 chapterList.map(chapter =>
-                  <MenuItem value={chapter}>{`Chapter ${chapter.number}: ${chapter.title}`}</MenuItem>
+                  <MenuItem value={chapter}>{`Chapter ${chapter.index}: ${chapter.title}`}</MenuItem>
                 )
               }
             </Select>

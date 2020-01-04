@@ -8,12 +8,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import CommentComponent from '../../component/CommentComponent/index'
 import ChapterList from '../../component/ChapterList/index'
 import SummaryComponent from '../../component/SummaryComponent/index'
+import _ from 'lodash'
+const { createApolloFetch } = require('apollo-fetch');
 
-const useStyles = makeStyles(theme => ({
+const fetch = createApolloFetch({
+  uri: 'http://localhost:8000/graphql',
+});
+
+const classes = {
   pageContainer: {
     marginBottom: 50
   }
-}));
+};
 
 const dummyChapterList = [
   {
@@ -94,15 +100,73 @@ const dummyManga = {
   }
 }
 
-export default function SummaryPage() {
-  const classes = useStyles();
-  const { id } = useParams();
+export default class SummaryPage extends React.Component {
 
-  return (
-    <Grid container xs={12} justify="center" className={classes.pageContainer}>
-      <Header/>
-      <SummaryComponent manga={dummyManga}/>
-      <ChapterList id={id} chapterList={dummyChapterList}/>
-    </Grid>
-  );
+  constructor(props) {
+    super(props);
+    const {params} = props.match
+    this.state = {
+      id: params.id,
+      manga: {}
+    };
+  }
+
+  componentDidMount() {
+    const {id} = this.state
+    fetch({
+      query: `query PostsForAuthor($id: ID!) {
+        summary(mangaId: $id) {
+          _id
+          categories
+          chapters {
+            _id
+            index
+            title
+            images
+            lastUpdated
+          }
+          title
+          description
+          image
+          alias
+          lastUpdated
+          uploader {
+            mail
+            DOB
+            gender
+            role
+          }
+          comments {
+            creator {
+              username
+            }
+            comment
+          }
+        }
+      }`,
+      variables: { id: id },
+    }).then(res => {
+      const manga = _.get(res, 'data.summary', {})
+      if (manga) {
+        this.setState({
+          manga: manga
+        })
+      }
+    });
+  }
+
+  render() {
+    const {id, manga} = this.state
+    const chapterList = _.get(manga, 'chapters', [])
+    return (
+      <Grid container xs={12} justify="center" className={classes.pageContainer}>
+        <Header/>
+        { !_.isEmpty(manga)
+          ? <SummaryComponent manga={manga}/>
+          : null
+        }
+        <ChapterList id={id} chapterList={chapterList}/>
+      </Grid>
+    );
+  }
 }
