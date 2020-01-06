@@ -1,5 +1,4 @@
 const fs = require('fs')
-const btoa = require('btoa');
 
 const User = require("../../models/user");
 const Manga = require("../../models/manga");
