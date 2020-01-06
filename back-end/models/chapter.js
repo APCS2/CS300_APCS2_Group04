@@ -6,7 +6,12 @@ const chapterSchema = new Schema(
     {
         title: String,
         index: Number,
-        images: [String],
+        images: [
+            {
+                path: String,
+                src: String
+            }
+        ],
         lastUpdated: String,
         manga: {
             type: Schema.Types.ObjectId,

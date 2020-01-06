@@ -13,10 +13,10 @@ function Routers() {
   return (
     <Router>
         <Switch>
-            <Route path="/manga/:id/chapter/:chapterId">
+            <Route path="/manga/:alias/chapter/:index">
               <ViewPage />
             </Route>
-            <Route exact path="/manga/:id" component={SummaryPage}/>
+            <Route exact path="/manga/:alias" component={SummaryPage}/>
             <Route path="/">
               <Home />
             </Route>

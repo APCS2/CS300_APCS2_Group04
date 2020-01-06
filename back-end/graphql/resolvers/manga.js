@@ -1,8 +1,10 @@
-const User = require("../../models/user");
+const fs = require('fs')
+const btoa = require('btoa');
 
+const User = require("../../models/user");
 const Manga = require("../../models/manga");
 
-const { transformManga, transformChapter } = require('./merge')
+const { transformManga, transformChapter, arrayBufferToBase64, path } = require('./merge')
 
 const convertToSlug = async title => {
   return title
@@ -12,12 +14,17 @@ const convertToSlug = async title => {
 };
 
 module.exports = {
-  summary: async ({ aliasManga }) => {
+  summary: async ({ alias }) => {
     try {
-      const manga = await Manga.find({ alias: aliasManga });
+      const manga = await Manga.findOne({ alias: alias });
       if (!manga) {
         throw new Error("Manga does not exist");
       }
+      let base64Flag = 'data:image/png;base64,';
+      let data = fs.readFileSync(path + manga.image)
+      let imageStr = await arrayBufferToBase64(data)
+      manga.img = base64Flag + imageStr
+      await manga.save()
       return transformManga(manga);
     } catch (err) {
       throw err;

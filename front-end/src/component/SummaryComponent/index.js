@@ -69,7 +69,7 @@ export default function SummaryComponent(props) {
         </Typography>
       </Grid>
       <Grid xs={3}>
-        <img src={manga.thumbnail} alt={manga.title} className={classes.img}/>
+        <img src={manga.img} alt={manga.title} className={classes.img}/>
         <Grid xs={12} container justify="center">
           <IconButton fullWidth color="primary">
             <FavoriteIcon fontSize="large" style={{ color: 'red' }}/>

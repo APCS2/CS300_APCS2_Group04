@@ -1,8 +1,11 @@
+const fs = require('fs')
+const btoa = require('btoa')
+
 const Chapter = require("../../models/chapter");
 const Manga = require("../../models/manga");
 const User = require('../../models/user')
 
-const { transformManga, transformChapter } = require('./merge')
+const { transformManga, transformChapter, arrayBufferToBase64, path } = require('./merge')
 
 module.exports = {
   uploadChapter: async ({ mangaId, chapterInput }, req) => {
@@ -33,11 +36,18 @@ module.exports = {
   },
   readChapter: async ({ aliasManga, index }) => {
     try {
-      const existingManga = await Manga.find({alias: aliasManga});
+      const existingManga = await Manga.findOne({alias: aliasManga});
       if (!existingManga) {
         throw new Error("Manga does not exist");
       }
-      const existingChapter = await existingManga.chapters.find({index: index});
+      const existingChapter = await Chapter.findOne({ manga: existingManga, index: index })
+      for(let i in existingChapter.images) {
+        let base64Flag = 'data:image/png;base64,';
+        let data = fs.readFileSync(path + aliasManga+ "/" + index + "/" + existingChapter.images[i].path)
+        let imageStr = await arrayBufferToBase64(data)
+        existingChapter.images[i].src = base64Flag + imageStr
+        await existingChapter.save()
+      }
       if (!existingChapter) {
         throw new Error("Chapter does not exist");
       }

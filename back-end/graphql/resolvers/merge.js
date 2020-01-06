@@ -1,4 +1,5 @@
 const dataLoader = require("dataloader")
+const btoa = require('btoa')
 
 const Manga = require('../../models/manga');
 const User = require('../../models/user');
@@ -7,6 +8,8 @@ const Chapter = require('../../models/chapter');
 const mangaLoader = new dataLoader((mangaIds) => {
     return mangas(mangaIds);
 })
+
+const path = "./Manga/"
 
 const chapterLoader = new dataLoader((chapterIds) => {
     return chapters(chapterIds)
@@ -131,9 +134,20 @@ const transformManga = manga => {
         description: manga._doc.description,
         image: manga._doc.image,
         lastUpdated: manga._doc.lastUpdated,
+        img: manga._doc.img,
         chapters: chapters.bind(this, ...manga.chapters)
     }
 }
 
+arrayBufferToBase64 = async (buffer) => {
+    var binary = '';
+    var bytes = await [].slice.call(new Uint8Array(buffer));
+  
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    return btoa(binary)
+}
+
 exports.transformChapter = transformChapter;
 exports.transformManga = transformManga;
+exports.arrayBufferToBase64 = arrayBufferToBase64;
+exports.path = path

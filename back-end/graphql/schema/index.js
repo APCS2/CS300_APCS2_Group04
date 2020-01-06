@@ -24,12 +24,18 @@ module.exports = buildSchema(`
         comment: String!
     }
 
+    type Page {
+        path: String!
+        src: String
+    }
+
     type Manga {
         _id: ID!
         title: String!
         author: String!
         alias: String!
         image: String!
+        img: String!
         categories: [String!]
         description: String!
         lastUpdated: String!
@@ -43,7 +49,7 @@ module.exports = buildSchema(`
         _id: ID!
         index: Int!
         title: String!
-        images: [String!]!
+        images: [Page!]!
         lastUpdated: String!
         uploader: User!
         manga: Manga!
@@ -102,7 +108,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         login(username: String!, password: String!): AuthData!
-        summary(aliasManga: String!): Manga!
+        summary(alias: String!): Manga!
         mangas: [Manga!]!
         readChapter(aliasManga: String!, index: Int!): Chapter!
     }

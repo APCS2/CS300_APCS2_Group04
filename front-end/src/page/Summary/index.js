@@ -125,6 +125,7 @@ export default class SummaryPage extends React.Component {
             images
             lastUpdated
           }
+          author
           title
           description
           image
