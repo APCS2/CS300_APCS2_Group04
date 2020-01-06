@@ -1,4 +1,5 @@
 const fs = require('fs')
+const btoa = require('btoa');
 
 const User = require("../../models/user");
 const Manga = require("../../models/manga");
@@ -22,7 +23,7 @@ module.exports = {
       let base64Flag = 'data:image/png;base64,';
       let data = fs.readFileSync(path + manga.image)
       let imageStr = await arrayBufferToBase64(data)
-      manga.img = base64Flag + imageStr
+      manga.thumbnail = base64Flag + imageStr
       await manga.save()
       return transformManga(manga);
     } catch (err) {

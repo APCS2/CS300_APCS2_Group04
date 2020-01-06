@@ -13,7 +13,7 @@ const mangaSchema = new Schema({
   categories: [String],
   description: String,
   image: String,
-  img: String,
+  thumbnail: String,
   lastUpdated: String,
   chapters: [
     {

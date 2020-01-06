@@ -35,7 +35,7 @@ module.exports = buildSchema(`
         author: String!
         alias: String!
         image: String!
-        img: String!
+        thumbnail: String!
         categories: [String!]
         description: String!
         lastUpdated: String!
