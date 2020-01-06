@@ -16,9 +16,7 @@ function Routers() {
             <Route path="/manga/:id/chapter/:chapterId">
               <ViewPage />
             </Route>
-            <Route path="/manga/:id">
-              <SummaryPage />
-            </Route>
+            <Route exact path="/manga/:id" component={SummaryPage}/>
             <Route path="/">
               <Home />
             </Route>

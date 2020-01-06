@@ -10,6 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import { NavLink } from "react-router-dom";
+import _ from 'lodash'
 
 const tableRow = [
   {
@@ -17,16 +18,8 @@ const tableRow = [
     key: 'author'
   },
   {
-    label: 'Artist(s):',
-    key: 'artist'
-  },
-  {
-    label: 'Tags:',
-    key: 'tags'
-  },
-  {
-    label: 'Type:',
-    key: 'type'
+    label: 'Categories:',
+    key: 'categories'
   },
   {
     label: 'Status:',
@@ -34,7 +27,7 @@ const tableRow = [
   },
   {
     label: 'Summary:',
-    key: 'summary'
+    key: 'description'
   }
 ]
 
@@ -56,11 +49,18 @@ const useStyles = makeStyles(theme => ({
     height: 35
   }
 }));
+const isArrayValue = (varible) => {
+  if (_.isArray(varible)) {
+    return varible.join(', ')
+  }
+  return varible
+}
 
 export default function SummaryComponent(props) {
   const classes = useStyles();
   const { manga } = props
-
+  let newestChapter = manga.chapters.slice(-1)[0]
+  debugger
   return (
     <Grid container xs={10} justify="space-between" className={classes.container}>
       <Grid xs={12}>
@@ -89,7 +89,7 @@ export default function SummaryComponent(props) {
                   {item.label}
                 </TableCell>
                 <TableCell align="left">
-                  {manga[item.key]}
+                  {isArrayValue(manga[item.key])}
                 </TableCell>
             </TableRow>
             )}
@@ -101,9 +101,9 @@ export default function SummaryComponent(props) {
                 <NavLink
                   className="tags"
                   style={{ color: 'lightBlue' }}
-                  to={`/manga/${manga.id}/chapter/${manga.newestChapter.id}`}
+                  to={`/manga/${manga._id}/chapter/${newestChapter._id}`}
                 >
-                  {`Chapter ${manga.newestChapter.number}: ${manga.newestChapter.title}`}
+                  {`Chapter ${newestChapter.index}: ${newestChapter.title}`}
                 </NavLink>
               </TableCell>
             </TableRow>
