@@ -4,25 +4,24 @@ const Schema = mongoose.Schema;
 
 const mangaSchema = new Schema({
   title: String,
-<<<<<<< HEAD
   author: String,
   uploader: {
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
   alias: String,
   categories: [String],
   description: String,
-  image: String,
+  thumbnail: String,
   lastUpdated: String,
+  status: String,
   chapters: [
     {
       type: Schema.Types.ObjectId,
       ref: "Chapter"
     }
   ],
+  view: Number,
   rating: [
     {
       user: {

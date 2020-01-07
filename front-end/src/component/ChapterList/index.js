@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 2)
   },
   container: {
-    marginTop: 19,
+    marginTop: 5,
   },
   formControl: {
     width: '100%',
@@ -22,15 +22,15 @@ const useStyles = makeStyles(theme => ({
 export default function ChapterBar(props) {
   const classes = useStyles();
   let history = useHistory();
-  const { id, chapterId, chapterList } = props;
+  const { alias, chapterList } = props;
   const handleChange = event => {
-    history.push(`/manga/${id}/chapter/${event.target.value.id}`)
+    history.push(`/manga/${alias}/chapter/${event.target.value.index}`)
   };
 
   return (
-    <Grid container xs={10} justify="center" className={classes.container}>
+    <Grid container xs={12} justify="center" className={classes.container}>
       <Grid container justify="space-between">
-        <Grid item xs={6} container justify>
+        <Grid item xs={10} container justify>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel id="demo-simple-select-label">Chapter List</InputLabel>
             <Select
@@ -43,7 +43,7 @@ export default function ChapterBar(props) {
               </MenuItem>
               {
                 chapterList.map(chapter =>
-                  <MenuItem value={chapter}>{`Chapter ${chapter.number}: ${chapter.title}`}</MenuItem>
+                  <MenuItem value={chapter}>{`Chapter ${chapter.index}: ${chapter.title}`}</MenuItem>
                 )
               }
             </Select>

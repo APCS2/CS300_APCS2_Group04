@@ -1,6 +1,10 @@
-const User = require("../../models/user");
+const fs = require('fs')
+const btoa = require('btoa');
 
+const User = require("../../models/user");
 const Manga = require("../../models/manga");
+
+const { transformManga, transformChapter, arrayBufferToBase64, path } = require('./merge')
 
 const convertToSlug = async title => {
   return title
@@ -10,18 +14,39 @@ const convertToSlug = async title => {
 };
 
 module.exports = {
-  summary: async ({ mangaId }) => {
+  lastest: async() => {
     try {
-      const manga = await Manga.findById(mangaId);
+      const lastestMangas = await Manga.find({}).sort({ lastUpdated: -1 }).skip(0).limit(5)
+      return lastestMangas.map(manga => {
+        return transformManga(manga);
+      })
+    }
+    catch (err) {
+      throw err;
+    }
+  },
+  trending: async() => {
+    try {
+      const trendingMangas = await Manga.find({}).sort({ view: -1, lastUpdated: -1 }).skip(0).limit(5)
+      return trendingMangas.map(manga => {
+        return transformManga(manga);
+      })
+    }
+    catch (err) {
+      throw err;
+    }
+  },  
+  summary: async ({ alias }) => {
+    try {
+      const manga = await Manga.findOne({ alias: alias });
       if (!manga) {
         throw new Error("Manga does not exist");
       }
-      return manga;
+      return transformManga(manga);
     } catch (err) {
       throw err;
     }
   },
-<<<<<<< HEAD
   uploadManga: async ({ mangaInput }, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
@@ -40,32 +65,13 @@ module.exports = {
       image: mangaInput.image,
       lastUpdated: new Date().toLocaleString(),
       alias: await convertToSlug(alias),
-      uploader: uploader
+      uploader: uploader._id
     });
     try {
       uploader.uploadedMangas.push(manga);
       await uploader.save();
       let result = await manga.save();
-=======
-  uploadManga: async ({ mangaInput }) => {
-    try {
-      let alias = await convertToSlug(mangaInput.title);
-      const existingManga = await Manga.findOne({ alias: alias });
-      if (existingManga) {
-        throw new Error("Manga exists already");
-      }
-      const manga = new Manga({
-        title: mangaInput.title,
-        categories: [...mangaInput.categories],
-        description: mangaInput.description,
-        status: mangaInput.status,
-        image: mangaInput.image,
-        lastUpdated: new Date().toLocaleString(),
-        alias: await convertToSlug(alias)
-      });
-      let result = manga.save();
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
-      return result;
+      return transformManga(result);
     } catch (err) {
       throw err;
     }
@@ -112,7 +118,6 @@ module.exports = {
           break;
         }
       }
-      console.log(rated);
       if (rated != -1) {
         ExistManga.rating[rated].rating = +RatingInput.rating;
       } else {

@@ -11,15 +11,12 @@ module.exports = buildSchema(`
         gender: String
         favoriteMangas: [Manga!]
         role: String
-<<<<<<< HEAD
         uploadedMangas: [Manga!]
     }
 
     type AuthData {
         userId: ID!
         token: String!
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
     }
 
     type Comment {
@@ -30,22 +27,17 @@ module.exports = buildSchema(`
     type Manga {
         _id: ID!
         title: String!
-<<<<<<< HEAD
         author: String!
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
         alias: String!
-        image: String!
+        thumbnail: String!
         categories: [String!]
         description: String!
         lastUpdated: String!
         chapters: [Chapter!]
         comments: [Comment!]
-        status: Int!
-<<<<<<< HEAD
+        status: String!
+        view: Int
         uploader: User!
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
     }
 
     type Chapter {
@@ -54,6 +46,8 @@ module.exports = buildSchema(`
         title: String!
         images: [String!]!
         lastUpdated: String!
+        uploader: User!
+        manga: Manga!
     }
 
     input UserInput {
@@ -63,10 +57,7 @@ module.exports = buildSchema(`
 
     input MangaInput {
         title: String!
-<<<<<<< HEAD
         author: String!
-=======
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
         categories: [String!]
         description: String!
         status: Int!
@@ -103,7 +94,6 @@ module.exports = buildSchema(`
     }
 
     type RootMutation {
-<<<<<<< HEAD
         createUser(userInput: UserInput): User!
         uploadManga(mangaInput: MangaInput): Manga!
         uploadChapter(mangaId: ID, chapterInput: ChapterInput): Chapter!
@@ -112,21 +102,12 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
+        lastest: [Manga!]!
+        trending: [Manga!]!
         login(username: String!, password: String!): AuthData!
-=======
-        createUser(userInput: UserInput): User
-        uploadManga(mangaInput: MangaInput): Manga
-        uploadChapter(mangaId: ID, chapterInput: ChapterInput): Chapter
-        comment(CommentInput: CommentInput): CommentSchema
-        rating(RatingInput: RatingInput): RatingSchema
-    }
-
-    type RootQuery {
-        login(username: String!, password: String!): User!
->>>>>>> 335ea704ad7f0aafbb9d221be180771deb926053
-        summary(mangaId: ID!): Manga!
+        summary(alias: String!): Manga!
         mangas: [Manga!]!
-        readChapter(mangaId: ID!, chapterId: ID!): Chapter!
+        readChapter(aliasManga: String!, index: Int!): Chapter!
     }
 
     schema {

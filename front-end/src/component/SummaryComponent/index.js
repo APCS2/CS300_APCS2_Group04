@@ -10,6 +10,8 @@ import Rating from '@material-ui/lab/Rating';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import { NavLink } from "react-router-dom";
+import ChapterList from '../ChapterList/index'
+import _ from 'lodash'
 
 const tableRow = [
   {
@@ -17,24 +19,16 @@ const tableRow = [
     key: 'author'
   },
   {
-    label: 'Artist(s):',
-    key: 'artist'
-  },
-  {
-    label: 'Tags:',
-    key: 'tags'
-  },
-  {
-    label: 'Type:',
-    key: 'type'
-  },
-  {
-    label: 'Status:',
-    key: 'status'
+    label: 'Categories:',
+    key: 'categories'
   },
   {
     label: 'Summary:',
-    key: 'summary'
+    key: 'description'
+  },
+  {
+    label: 'Last Update:',
+    key: 'lastUpdated'
   }
 ]
 
@@ -56,10 +50,17 @@ const useStyles = makeStyles(theme => ({
     height: 35
   }
 }));
+const isArrayValue = (varible) => {
+  if (_.isArray(varible)) {
+    return varible.join(', ')
+  }
+  return varible
+}
 
 export default function SummaryComponent(props) {
   const classes = useStyles();
-  const { manga } = props
+  const { manga, thumbnail } = props
+  let newestChapter = manga.chapters.slice(-1)[0]
 
   return (
     <Grid container xs={10} justify="space-between" className={classes.container}>
@@ -69,14 +70,14 @@ export default function SummaryComponent(props) {
         </Typography>
       </Grid>
       <Grid xs={3}>
-        <img src={manga.thumbnail} alt={manga.title} className={classes.img}/>
+        <img src={`http://${thumbnail}`} alt={manga.title} className={classes.img}/>
         <Grid xs={12} container justify="center">
           <IconButton fullWidth color="primary">
             <FavoriteIcon fontSize="large" style={{ color: 'red' }}/>
           </IconButton>
         </Grid>
       </Grid>
-      <Grid container xs={8} direction="row" className={classes.content}>
+      <Grid container xs={8} direction="row" justify="center" className={classes.content}>
         <Table className={classes.table} aria-label="simple table">
           <colgroup>
             <col width="20%" />
@@ -89,7 +90,7 @@ export default function SummaryComponent(props) {
                   {item.label}
                 </TableCell>
                 <TableCell align="left">
-                  {manga[item.key]}
+                  {isArrayValue(manga[item.key])}
                 </TableCell>
             </TableRow>
             )}
@@ -101,22 +102,15 @@ export default function SummaryComponent(props) {
                 <NavLink
                   className="tags"
                   style={{ color: 'lightBlue' }}
-                  to={`/manga/${manga.id}/chapter/${manga.newestChapter.id}`}
+                  to={`/manga/${manga.alias}/chapter/${newestChapter.index}`}
                 >
-                  {`Chapter ${manga.newestChapter.number}: ${manga.newestChapter.title}`}
+                  {`Chapter ${newestChapter.index}: ${newestChapter.title}`}
                 </NavLink>
-              </TableCell>
-            </TableRow>
-            <TableRow key='rating'>
-              <TableCell align="right" >
-                Rating:
-              </TableCell>
-              <TableCell align="left">
-                <Rating disabled name="half-rating" value={manga.rating} precision={0.5} />
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
+        <ChapterList alias={manga.alias} chapterList={manga.chapters}/>
       </Grid>
     </Grid>
   );

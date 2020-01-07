@@ -2,16 +2,24 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ChapterBar from '../../component/ChapterBar/index'
 import Header from '../../component/header/header'
-import { useParams } from "react-router-dom";
 import ReadingComponent from '../../component/ReadingComponent/index'
 import { makeStyles } from '@material-ui/core/styles';
 import CommentComponent from '../../component/CommentComponent/index'
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import _ from 'lodash'
+import Typography from '@material-ui/core/Typography';
+const { createApolloFetch } = require('apollo-fetch');
 
-const useStyles = makeStyles(theme => ({
+const classes = {
   pageContainer: {
     marginBottom: 50
   }
-}));
+};
+
+const fetch = createApolloFetch({
+  uri: 'http://localhost:8000/graphql',
+});
 
 const dummyChapterList = [
   {
@@ -79,17 +87,117 @@ const dummyComment = [
   }
 ]
 
-export default function ViewPage() {
-  const classes = useStyles();
-  const { id, chapterId } = useParams();
+export default class ViewPage extends React.Component {
 
-  return (
-    <Grid container xs={12} justify="center" className={classes.pageContainer}>
-      <Header/>
-      <ChapterBar id={id} chapterId={chapterId} chapterList={dummyChapterList}/>
-      <ReadingComponent pageList={dummyImg}/>
-      <ChapterBar id={id} chapterId={chapterId} chapterList={dummyChapterList}/>
-      <CommentComponent commentList={dummyComment}/>
-    </Grid>
-  );
+  constructor(props) {
+    super(props);
+    const {params} = props.match
+    this.state = {
+      alias: params.alias,
+      index: params.index,
+      pageList: [],
+      chapterList: [],
+      loading: true,
+      success: false,
+      error: '',
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    const {params} = props.match
+    this.setState({
+      alias: params.alias,
+      index: params.index,
+      pageList: [],
+      chapterList: [],
+      loading: true,
+      success: false,
+    }, () => this.fetchData())
+  }
+
+  componentDidMount() {
+    this.fetchData()
+  }
+
+  getError = (error) => {
+    if (error == "Manga does not exist") {
+      return 'Manga Not Found'
+    }
+    if (error == "Chapter does not exist") {
+      return 'Chapters Not Found'
+    }
+    return 'Server Unavailable'
+  }
+
+  fetchData = () => {
+    const {alias, index} = this.state
+    fetch({
+      query: `query ReadChapter($alias: String!, $index: Int!) {
+        readChapter(aliasManga: $alias, index: $index) {
+          index
+          title
+          images
+          manga{
+            chapters{
+              index
+              title
+              lastUpdated
+            }
+          }
+        }
+      }`,
+      variables: { alias: alias, index: Number(index) },
+    }).then(res => {
+      const data = _.get(res, 'data', {})
+      const chapter = _.get(res, 'data.readChapter', {})
+      const pageList = _.get(chapter, 'images', [])
+      const chapterList = _.get(chapter, 'manga.chapters', [])
+      const error = _.get(res, 'errors[0].message', '')
+      if (data) {
+        this.setState({
+          pageList,
+          chapterList,
+          loading: false,
+          success: true
+        })
+      } else {
+        this.setState({
+          loading: false,
+          error
+        })
+      }
+    });
+  }
+
+  render() {
+    const {chapterList, pageList, index, alias, loading, success, error} = this.state;
+    debugger
+    return (
+      <Grid container xs={12} justify="center" className={classes.pageContainer}>
+        <Header/>
+        {
+          loading
+          ? <CircularProgress size={90}></CircularProgress>
+          : null
+        }
+        { success
+          ? <Grid container xs={12} justify="center" className={classes.pageContainer}>
+            <ChapterBar alias={alias} index={index} chapterList={chapterList}/>
+            <ReadingComponent pageList={pageList}/>
+            <ChapterBar alias={alias} index={index} chapterList={chapterList}/>
+            <CommentComponent commentList={dummyComment}/>
+          </Grid>
+          : null
+        }
+        { (!success && !loading)
+          ? <Grid container xs={12} justify="center" className={classes.pageContainer}>
+            <Typography variant="h5" component="h3">
+              {this.getError(error)}
+            </Typography>
+          </Grid>
+          : null
+        }
+      </Grid>
+    )
+  }
 }
