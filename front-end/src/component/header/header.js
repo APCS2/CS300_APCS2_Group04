@@ -28,13 +28,13 @@ export default function Header() {
       <Grid item xs={12}>
         <Paper className={classes.title} color="primary">
           <Typography align="center" variant="h4" component="h4">
-            Big Titty Hentai Girl
+            T-ruyện
           </Typography>
         </Paper>
       </Grid>
       <Grid xs={10}>
         <ButtonGroup color="primary" variant="contained" fullWidth aria-label="full width contained outlined button group">
-          <Button onClick={() => headerHandler('/Home')}>Home Page</Button>
+          <Button onClick={() => headerHandler('')}>Home Page</Button>
           <Button>Trending</Button>
           <Button>Latest</Button>
           <Button>Manga List</Button>

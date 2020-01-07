@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     width: '100%',
+  },
+  backToSummary: {
+    marginBottom: 19
   }
 }));
 
@@ -39,9 +42,18 @@ export default function ChapterBar(props) {
       history.push(`/manga/${alias}/chapter/${chapterList[currentChapter-1].index}`)
     }
   }
-  debugger
+
+  const backToSummaryHandler = () => {
+    history.push(`/manga/${alias}`)
+  }
+
   return (
     <Grid container xs={8} justify="center" className={classes.container}>
+      <Grid container xs={5} justify="center" className={classes.backToSummary}>
+        <Button fullWidth variant="contained" color="primary" onClick={backToSummaryHandler}>
+          Back to summary
+        </Button>
+      </Grid>
       <Grid container justify="space-between">
         <Grid item xs={2} container justify="center">
           <Button fullWidth variant="contained" color="primary" onClick={previousHandler}>

@@ -9,6 +9,7 @@ import CommentComponent from '../../component/CommentComponent/index'
 import ChapterList from '../../component/ChapterList/index'
 import SummaryComponent from '../../component/SummaryComponent/index'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 import _ from 'lodash'
 const { createApolloFetch } = require('apollo-fetch');
 
@@ -111,11 +112,40 @@ export default class SummaryPage extends React.Component {
       alias: params.alias,
       manga: {},
       thumbnail: '',
-      loading: true
+      loading: true,
+      success: false,
+      error: ''
     };
   }
 
+  componentWillReceiveProps(props) {
+    const {params} = props.match
+    this.setState({
+      id: params.id,
+      alias: params.alias,
+      manga: {},
+      thumbnail: '',
+      loading: true,
+      success: false,
+      error: ''
+    }, () => this.fetchData())
+  }
+
   componentDidMount() {
+    this.fetchData()
+  }
+
+  getError = (error) => {
+    if (error == "Manga does not exist") {
+      return 'Manga Not Found'
+    }
+    if (error == "Chapter does not exist") {
+      return 'Chapters Not Found'
+    }
+    return 'Server Unavailable'
+  }
+
+  fetchData = () => {
     const {alias} = this.state
     fetch({
       query: `query PostsForAuthor($alias: String!) {
@@ -130,6 +160,7 @@ export default class SummaryPage extends React.Component {
           alias
           description
           lastUpdated
+          thumbnail
           author
           uploader {
             mail
@@ -147,39 +178,30 @@ export default class SummaryPage extends React.Component {
       }`,
       variables: { alias: alias },
     }).then(res => {
-      const manga = _.get(res, 'data.summary', {})
-      if (manga) {
+      const data = _.get(res, 'data', {})
+      const manga = _.get(data, 'summary', {})
+      const thumbnail = _.get(manga, 'thumbnail', '')
+      const error = _.get(res, 'errors[0].message', '')
+      if (data) {
         this.setState({
-          manga: manga,
-          loading: false
+          manga,
+          thumbnail,
+          loading: false,
+          success: true
         })
       } else {
         this.setState({
-          loading: false
-        })
-      }
-    });
-
-    fetch({
-      query: `query PostsForAuthor($alias: String!) {
-        summary(alias: $alias) {
-          thumbnail
-        }
-      }`,
-      variables: { alias: alias },
-    }).then(res => {
-      const thumbnail = _.get(res, 'data.summary.thumbnail', '')
-      if (thumbnail) {
-        this.setState({
-          thumbnail
+          loading: false,
+          error
         })
       }
     });
   }
 
   render() {
-    const {alias, manga, thumbnail, loading} = this.state
+    const {alias, manga, thumbnail, loading, success, error} = this.state
     const chapterList = _.get(manga, 'chapters', [])
+    debugger
     return (
       <Grid container xs={12} justify="center" className={classes.pageContainer}>
         <Header/>
@@ -188,12 +210,18 @@ export default class SummaryPage extends React.Component {
           ? <CircularProgress size={90}></CircularProgress>
           : null
         }
-        { !_.isEmpty(manga)
-          ? <SummaryComponent manga={manga} thumbnail={thumbnail}/>
+        { success
+          ? <Grid container xs={12} justify="center" className={classes.pageContainer}>
+            <SummaryComponent manga={manga} thumbnail={thumbnail}/>
+          </Grid>
           : null
         }
-        { !_.isEmpty(manga)
-          ? <ChapterList alias={alias} chapterList={chapterList}/>
+        { (!success && !loading)
+          ? <Grid container xs={12} justify="center" className={classes.pageContainer}>
+            <Typography variant="h5" component="h3">
+              {this.getError(error)}
+            </Typography>
+          </Grid>
           : null
         }
       </Grid>

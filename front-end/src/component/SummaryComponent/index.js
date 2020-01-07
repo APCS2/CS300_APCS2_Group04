@@ -10,6 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import { NavLink } from "react-router-dom";
+import ChapterList from '../ChapterList/index'
 import _ from 'lodash'
 
 const tableRow = [
@@ -60,7 +61,7 @@ export default function SummaryComponent(props) {
   const classes = useStyles();
   const { manga, thumbnail } = props
   let newestChapter = manga.chapters.slice(-1)[0]
-  debugger
+
   return (
     <Grid container xs={10} justify="space-between" className={classes.container}>
       <Grid xs={12}>
@@ -69,14 +70,14 @@ export default function SummaryComponent(props) {
         </Typography>
       </Grid>
       <Grid xs={3}>
-        <img src={thumbnail} alt={manga.title} className={classes.img}/>
+        <img src={`http://${thumbnail}`} alt={manga.title} className={classes.img}/>
         <Grid xs={12} container justify="center">
           <IconButton fullWidth color="primary">
             <FavoriteIcon fontSize="large" style={{ color: 'red' }}/>
           </IconButton>
         </Grid>
       </Grid>
-      <Grid container xs={8} direction="row" className={classes.content}>
+      <Grid container xs={8} direction="row" justify="center" className={classes.content}>
         <Table className={classes.table} aria-label="simple table">
           <colgroup>
             <col width="20%" />
@@ -109,6 +110,7 @@ export default function SummaryComponent(props) {
             </TableRow>
           </TableBody>
         </Table>
+        <ChapterList alias={manga.alias} chapterList={manga.chapters}/>
       </Grid>
     </Grid>
   );

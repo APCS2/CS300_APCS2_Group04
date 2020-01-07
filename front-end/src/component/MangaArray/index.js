@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     marginTop: 19,
+    width: '100%'
   },
   gridList: {
     width: '100%',
@@ -25,8 +26,9 @@ const useStyles = makeStyles(theme => ({
     color: 'rgba(255, 255, 255, 0.54)',
   },
   image: {
-    width: 113,
-    maxHeight: 130
+    width: '100%',
+    maxHeight: 170,
+    objectFit: 'fill'
   }
 }));
 
@@ -52,37 +54,40 @@ export default function TitlebarGridList(props) {
   const { mangaArray, arrayTitle } = props;
   return (
     <div className={classes.mangaArrayContainer}>
-      <GridList cellHeight={180} className={classes.gridList} cols={6}>
+      <GridList cellHeight={'auto'} className={classes.gridList} cols={6}>
         <GridListTile key="Subheader" cols={8} style={{ height: 'auto' }}>
          <ListSubheader component="div">{arrayTitle}</ListSubheader>
         </GridListTile>
-        {mangaArray.map(tile => (
-          <GridListTile key={tile.img} cols={1}>
-            <Grid container xs={12} justify='center'>
-              <Grid xs={10}>
-                <img className={classes.image} src={tile.img} alt={tile.title} />
+        {mangaArray.map(tile => {
+          let newestChapter = tile.chapters.slice(-1)[0]
+          return (
+            <GridListTile key={tile.img} cols={1}>
+              <Grid container xs={12} justify='center'>
+                <Grid xs={10}>
+                  <img className={classes.image} src={`http://${tile.thumbnail}`} alt={tile.title} />
+                </Grid>
+                <Grid xs={10}>
+                  <NavLink
+                    className="tags"
+                    style={{ color: 'lightBlue', paddingBottom: 5, paddingTop: 5 }}
+                    to={`/manga/${tile.alias}`}
+                  >
+                    {tile.title}
+                  </NavLink>
+                </Grid>
+                <Grid xs={10}>
+                  <NavLink
+                    className="tags"
+                    style={{ color: 'lightBlue', paddingBottom: 5, paddingTop: 5 }}
+                    to={`/manga/${tile.alias}/chapter/${newestChapter.index}`}
+                  >
+                    {`Chapter ${newestChapter.index}: ${newestChapter.title}`}
+                  </NavLink>
+                </Grid>
               </Grid>
-              <Grid xs={10}>
-                <NavLink
-                  className="tags"
-                  style={{ color: 'lightBlue' }}
-                  to={`/manga/${tile.id}`}
-                >
-                  {tile.title}
-                </NavLink>
-              </Grid>
-              <Grid xs={10}>
-                <NavLink
-                  className="tags"
-                  style={{ color: 'lightBlue' }}
-                  to={`/manga/${tile.id}/chapter/${tile.newestChapter.id}`}
-                >
-                  {`Chapter ${tile.newestChapter.number}: ${tile.newestChapter.title}`}
-                </NavLink>
-              </Grid>
-            </Grid>
-          </GridListTile>
-        ))}
+            </GridListTile>
+          )
+        })}
       </GridList>
     </div>
   );

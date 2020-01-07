@@ -2,106 +2,208 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Header from '../../component/header/header'
 import MangaArray from '../../component/MangaArray/index'
+import _ from 'lodash'
+import Typography from '@material-ui/core/Typography';
+const { createApolloFetch } = require('apollo-fetch');
+
+const fetch = createApolloFetch({
+  uri: 'http://localhost:8000/graphql',
+});
 
 const dummyMangaList = [
   {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
-  },
-  {
-    id: '111',
-    img: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
-    title: 'Komi san is the best',
-    newestChapter: {
-      title: 'Dark Web 2',
-      id: 2,
-      number: 2
-    }
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
+  },{
+    title: "Naruto",
+    alias: "naruto",
+    thumbnail: "localhost:8000/manga/naruto/naruto.jpg",
+    chapters: [
+      {
+        index: 1,
+        title: "Uzimaki Naruto"
+      },
+      {
+        index: 2,
+        title: "Ko No Ha Maru!!"
+      }
+    ]
   }
 ]
 
-export default function DisabledTabs() {
-  const [value, setValue] = React.useState(2);
-  const [isLogin] = React.useState(false)
+export default class DisabledTabs extends React.Component {
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  return (
-    <Grid container xs={12} justify="center">
-      <Header/>
-      <Grid container xs={10}>
-        <MangaArray arrayTitle="Treding" mangaArray={dummyMangaList} />
+  constructor() {
+    super();
+    this.state = {
+      latest: [],
+      trending: [],
+      success: true,
+    };
+  }
+
+  componentDidMount(){
+    this.fetchData()
+  }
+
+  fetchData = () => {
+    fetch({
+      query: `query Latest {
+        lastest {
+          title
+          thumbnail
+          alias
+          chapters {
+            index
+            title
+          }
+        }
+      }`,
+    }).then(res => {
+      const data =_.get(res, 'data', {})
+      const latest = _.get(data, 'lastest', [])
+      debugger
+      if (data) {
+        this.setState({
+          latest,
+        })
+      } else {
+        this.setState({
+          success: false
+        })
+      }
+    });
+
+    fetch({
+      query: `query Trending {
+        trending {
+          title
+          thumbnail
+          alias
+          chapters {
+            index
+            title
+          }
+        }
+      }`,
+    }).then(res => {
+      const data =_.get(res, 'data', {})
+      const trending = _.get(data, 'trending', [])
+      if (data) {
+        this.setState({
+          trending,
+        })
+      } else {
+        this.setState({
+          success: false
+        })
+      }
+    });
+  }
+
+  render() {
+    const { latest, success, trending } = this.state
+    return (
+      <Grid container xs={12} justify="center">
+        <Header/>
+        {
+          success
+          ? <Grid container xs={12} justify="center">
+            <Grid container xs={10}>
+              <MangaArray arrayTitle="Treding" mangaArray={latest} />
+            </Grid>
+            <Grid container xs={10}>
+              <MangaArray arrayTitle="Latest" mangaArray={trending} />
+            </Grid>
+          </Grid>
+          : <Grid container xs={10}>
+            <Typography variant="h5" component="h3">
+              Server Unavailable
+            </Typography>
+          </Grid>
+        }
       </Grid>
-      <Grid container xs={10}>
-        <MangaArray arrayTitle="Latest" mangaArray={dummyMangaList} />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }

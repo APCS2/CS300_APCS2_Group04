@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 2)
   },
   container: {
-    marginTop: 19,
+    marginTop: 5,
   },
   formControl: {
     width: '100%',
@@ -28,9 +28,9 @@ export default function ChapterBar(props) {
   };
 
   return (
-    <Grid container xs={10} justify="center" className={classes.container}>
+    <Grid container xs={12} justify="center" className={classes.container}>
       <Grid container justify="space-between">
-        <Grid item xs={6} container justify>
+        <Grid item xs={10} container justify>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel id="demo-simple-select-label">Chapter List</InputLabel>
             <Select
