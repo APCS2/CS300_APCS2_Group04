@@ -13,13 +13,9 @@ function Routers() {
   return (
     <Router>
         <Switch>
-            <Route path="/manga/:alias/chapter/:index">
-              <ViewPage />
-            </Route>
+            <Route exact path="/manga/:alias/chapter/:index" component={ViewPage}/>
             <Route exact path="/manga/:alias" component={SummaryPage}/>
-            <Route path="/">
-              <Home />
-            </Route>
+            <Route exact path="/" component={Home}/>
         </Switch>
     </Router>
   );

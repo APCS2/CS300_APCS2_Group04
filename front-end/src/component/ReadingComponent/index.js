@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 export default function ChapterBar(props) {
   const classes = useStyles();
   const { pageList } = props;
-
+  debugger
   return (
     <Grid container xs={8} justify="center" className={classes.container}>
       {pageList.map(page => (
-        <Grid key={page.img} xs={10}>
-          <img src={page.img} alt={page.img} className={classes.img}/>
+        <Grid key={page.src} xs={10}>
+          <img src={page.src} alt={page.img} className={classes.img}/>
         </Grid>
       ))}
     </Grid>

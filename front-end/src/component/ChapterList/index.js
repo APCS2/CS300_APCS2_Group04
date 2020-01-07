@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
 export default function ChapterBar(props) {
   const classes = useStyles();
   let history = useHistory();
-  const { id, chapterId, chapterList } = props;
+  const { alias, chapterList } = props;
   const handleChange = event => {
-    history.push(`/manga/${id}/chapter/${event.target.value._id}`)
+    history.push(`/manga/${alias}/chapter/${event.target.value.index}`)
   };
 
   return (

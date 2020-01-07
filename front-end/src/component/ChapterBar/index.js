@@ -22,23 +22,24 @@ const useStyles = makeStyles(theme => ({
 export default function ChapterBar(props) {
   const classes = useStyles();
   let history = useHistory();
-  const { id, chapterId, chapterList } = props;
+  const { alias, index, chapterList } = props;
   const handleChange = event => {
-    history.push(`/manga/${id}/chapter/${event.target.value.id}`)
+    history.push(`/manga/${alias}/chapter/${event.target.value.index}`)
   };
   const currentChapter = chapterList.findIndex(function(element) {
-    return element.id === chapterId;
+    return element.index === Number(index);
   });
   const nextHandler = () => {
     if (currentChapter < chapterList.length-1) {
-      history.push(`/manga/${id}/chapter/${chapterList[currentChapter+1].id}`)
+      history.push(`/manga/${alias}/chapter/${chapterList[currentChapter+1].index}`)
     }
   }
   const previousHandler = () => {
     if (currentChapter > 0) {
-      history.push(`/manga/${id}/chapter/${chapterList[currentChapter-1].id}`)
+      history.push(`/manga/${alias}/chapter/${chapterList[currentChapter-1].index}`)
     }
   }
+  debugger
   return (
     <Grid container xs={8} justify="center" className={classes.container}>
       <Grid container justify="space-between">
@@ -60,7 +61,7 @@ export default function ChapterBar(props) {
               </MenuItem>
               {
                 chapterList.map(chapter =>
-                  <MenuItem value={chapter}>{`Chapter ${chapter.number}: ${chapter.title}`}</MenuItem>
+                  <MenuItem value={chapter}>{`Chapter ${chapter.index}: ${chapter.title}`}</MenuItem>
                 )
               }
             </Select>

@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CommentComponent from '../../component/CommentComponent/index'
 import ChapterList from '../../component/ChapterList/index'
 import SummaryComponent from '../../component/SummaryComponent/index'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import _ from 'lodash'
 const { createApolloFetch } = require('apollo-fetch');
 
@@ -107,30 +108,29 @@ export default class SummaryPage extends React.Component {
     const {params} = props.match
     this.state = {
       id: params.id,
-      manga: {}
+      alias: params.alias,
+      manga: {},
+      thumbnail: '',
+      loading: true
     };
   }
 
   componentDidMount() {
-    const {id} = this.state
+    const {alias} = this.state
     fetch({
-      query: `query PostsForAuthor($id: ID!) {
-        summary(mangaId: $id) {
-          _id
+      query: `query PostsForAuthor($alias: String!) {
+        summary(alias: $alias) {
           categories
           chapters {
-            _id
             index
             title
-            images
             lastUpdated
           }
-          author
           title
-          description
-          image
           alias
+          description
           lastUpdated
+          author
           uploader {
             mail
             DOB
@@ -145,28 +145,57 @@ export default class SummaryPage extends React.Component {
           }
         }
       }`,
-      variables: { id: id },
+      variables: { alias: alias },
     }).then(res => {
       const manga = _.get(res, 'data.summary', {})
       if (manga) {
         this.setState({
-          manga: manga
+          manga: manga,
+          loading: false
+        })
+      } else {
+        this.setState({
+          loading: false
+        })
+      }
+    });
+
+    fetch({
+      query: `query PostsForAuthor($alias: String!) {
+        summary(alias: $alias) {
+          thumbnail
+        }
+      }`,
+      variables: { alias: alias },
+    }).then(res => {
+      const thumbnail = _.get(res, 'data.summary.thumbnail', '')
+      if (thumbnail) {
+        this.setState({
+          thumbnail
         })
       }
     });
   }
 
   render() {
-    const {id, manga} = this.state
+    const {alias, manga, thumbnail, loading} = this.state
     const chapterList = _.get(manga, 'chapters', [])
     return (
       <Grid container xs={12} justify="center" className={classes.pageContainer}>
         <Header/>
-        { !_.isEmpty(manga)
-          ? <SummaryComponent manga={manga}/>
+        {
+          loading
+          ? <CircularProgress size={90}></CircularProgress>
           : null
         }
-        <ChapterList id={id} chapterList={chapterList}/>
+        { !_.isEmpty(manga)
+          ? <SummaryComponent manga={manga} thumbnail={thumbnail}/>
+          : null
+        }
+        { !_.isEmpty(manga)
+          ? <ChapterList alias={alias} chapterList={chapterList}/>
+          : null
+        }
       </Grid>
     );
   }

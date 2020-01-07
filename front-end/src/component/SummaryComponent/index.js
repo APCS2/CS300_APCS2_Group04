@@ -22,12 +22,12 @@ const tableRow = [
     key: 'categories'
   },
   {
-    label: 'Status:',
-    key: 'status'
-  },
-  {
     label: 'Summary:',
     key: 'description'
+  },
+  {
+    label: 'Last Update:',
+    key: 'lastUpdated'
   }
 ]
 
@@ -58,7 +58,7 @@ const isArrayValue = (varible) => {
 
 export default function SummaryComponent(props) {
   const classes = useStyles();
-  const { manga } = props
+  const { manga, thumbnail } = props
   let newestChapter = manga.chapters.slice(-1)[0]
   debugger
   return (
@@ -69,7 +69,7 @@ export default function SummaryComponent(props) {
         </Typography>
       </Grid>
       <Grid xs={3}>
-        <img src={manga.img} alt={manga.title} className={classes.img}/>
+        <img src={thumbnail} alt={manga.title} className={classes.img}/>
         <Grid xs={12} container justify="center">
           <IconButton fullWidth color="primary">
             <FavoriteIcon fontSize="large" style={{ color: 'red' }}/>
@@ -101,18 +101,10 @@ export default function SummaryComponent(props) {
                 <NavLink
                   className="tags"
                   style={{ color: 'lightBlue' }}
-                  to={`/manga/${manga._id}/chapter/${newestChapter._id}`}
+                  to={`/manga/${manga.alias}/chapter/${newestChapter.index}`}
                 >
                   {`Chapter ${newestChapter.index}: ${newestChapter.title}`}
                 </NavLink>
-              </TableCell>
-            </TableRow>
-            <TableRow key='rating'>
-              <TableCell align="right" >
-                Rating:
-              </TableCell>
-              <TableCell align="left">
-                <Rating disabled name="half-rating" value={manga.rating} precision={0.5} />
               </TableCell>
             </TableRow>
           </TableBody>

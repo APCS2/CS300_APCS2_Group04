@@ -2,16 +2,22 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ChapterBar from '../../component/ChapterBar/index'
 import Header from '../../component/header/header'
-import { useParams } from "react-router-dom";
 import ReadingComponent from '../../component/ReadingComponent/index'
 import { makeStyles } from '@material-ui/core/styles';
 import CommentComponent from '../../component/CommentComponent/index'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import _ from 'lodash'
+const { createApolloFetch } = require('apollo-fetch');
 
-const useStyles = makeStyles(theme => ({
+const classes = {
   pageContainer: {
     marginBottom: 50
   }
-}));
+};
+
+const fetch = createApolloFetch({
+  uri: 'http://localhost:8000/graphql',
+});
 
 const dummyChapterList = [
   {
@@ -79,17 +85,89 @@ const dummyComment = [
   }
 ]
 
-export default function ViewPage() {
-  const classes = useStyles();
-  const { id, chapterId } = useParams();
+export default class ViewPage extends React.Component {
 
-  return (
-    <Grid container xs={12} justify="center" className={classes.pageContainer}>
-      <Header/>
-      <ChapterBar id={id} chapterId={chapterId} chapterList={dummyChapterList}/>
-      <ReadingComponent pageList={dummyImg}/>
-      <ChapterBar id={id} chapterId={chapterId} chapterList={dummyChapterList}/>
-      <CommentComponent commentList={dummyComment}/>
-    </Grid>
-  );
+  constructor(props) {
+    super(props);
+    const {params} = props.match
+    this.state = {
+      alias: params.alias,
+      index: params.index,
+      pageList: [],
+      chapterList: [],
+      loading: true,
+      success: false,
+    };
+  }
+
+  componentDidMount() {
+    const {alias, index} = this.state
+    fetch({
+      query: `query PostsForAuthor($alias: String!) {
+        summary(alias: $alias) {
+          chapters {
+            index
+            title
+            lastUpdated
+          }
+        }
+      }`,
+      variables: { alias: alias },
+    }).then(res => {
+      const chapterList = _.get(res, 'data.summary.chapters', [])
+      this.setState({
+        chapterList
+      })
+    })
+
+    fetch({
+      query: `query ReadChapter($alias: String!, $index: Int!) {
+        readChapter(aliasManga: $alias, index: $index) {
+          index
+          title
+          images {
+            src
+          }
+        }
+      }`,
+      variables: { alias: alias, index: Number(index) },
+    }).then(res => {
+      const chapter = _.get(res, 'data.readChapter', {})
+      const pageList = _.get(chapter, 'images', [])
+      if (chapter) {
+        this.setState({
+          pageList,
+          loading: false,
+          success: true
+        })
+      } else {
+        this.setState({
+          loading: false
+        })
+      }
+    });
+  }
+
+  render() {
+    const {chapterList, pageList, index, alias, loading, success} = this.state;
+    return (
+      <Grid container xs={12} justify="center" className={classes.pageContainer}>
+        <Header/>
+        {
+          loading
+          ? <CircularProgress size={90}></CircularProgress>
+          : null
+        }
+        { success
+          ? <Grid container xs={12} justify="center" className={classes.pageContainer}>
+            <ChapterBar alias={alias} index={index} chapterList={chapterList}/>
+            <ReadingComponent pageList={pageList}/>
+            <ChapterBar alias={alias} index={index} chapterList={chapterList}/>
+            <CommentComponent commentList={dummyComment}/>
+          </Grid>
+          : null
+        }
+      </Grid>
+    )
+  }
 }
