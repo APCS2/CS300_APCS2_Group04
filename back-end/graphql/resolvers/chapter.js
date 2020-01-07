@@ -1,5 +1,4 @@
 const fs = require('fs')
-const btoa = require('btoa')
 
 const Chapter = require("../../models/chapter");
 const Manga = require("../../models/manga");
@@ -41,13 +40,6 @@ module.exports = {
         throw new Error("Manga does not exist");
       }
       const existingChapter = await Chapter.findOne({ manga: existingManga, index: index })
-      for(let i in existingChapter.images) {
-        let base64Flag = 'data:image/png;base64,';
-        let data = fs.readFileSync(path + aliasManga+ "/" + index + "/" + existingChapter.images[i].path)
-        let imageStr = await arrayBufferToBase64(data)
-        existingChapter.images[i].src = base64Flag + imageStr
-        await existingChapter.save()
-      }
       if (!existingChapter) {
         throw new Error("Chapter does not exist");
       }

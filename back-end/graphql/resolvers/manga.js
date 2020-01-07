@@ -14,17 +14,34 @@ const convertToSlug = async title => {
 };
 
 module.exports = {
+  lastest: async() => {
+    try {
+      const lastestMangas = await Manga.find({}).sort({ lastUpdated: -1 }).skip(0).limit(5)
+      return lastestMangas.map(manga => {
+        return transformManga(manga);
+      })
+    }
+    catch (err) {
+      throw err;
+    }
+  },
+  trending: async() => {
+    try {
+      const trendingMangas = await Manga.find({}).sort({ view: -1, lastUpdated: -1 }).skip(0).limit(5)
+      return trendingMangas.map(manga => {
+        return transformManga(manga);
+      })
+    }
+    catch (err) {
+      throw err;
+    }
+  },  
   summary: async ({ alias }) => {
     try {
       const manga = await Manga.findOne({ alias: alias });
       if (!manga) {
         throw new Error("Manga does not exist");
       }
-      let base64Flag = 'data:image/png;base64,';
-      let data = fs.readFileSync(path + manga.image)
-      let imageStr = await arrayBufferToBase64(data)
-      manga.thumbnail = base64Flag + imageStr
-      await manga.save()
       return transformManga(manga);
     } catch (err) {
       throw err;

@@ -12,15 +12,16 @@ const mangaSchema = new Schema({
   alias: String,
   categories: [String],
   description: String,
-  image: String,
   thumbnail: String,
   lastUpdated: String,
+  status: String,
   chapters: [
     {
       type: Schema.Types.ObjectId,
       ref: "Chapter"
     }
   ],
+  view: Number,
   rating: [
     {
       user: {

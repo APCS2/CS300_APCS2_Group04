@@ -26,7 +26,6 @@ const chapters = async chapterIds => {
                 $in: chapterIds
             }
         })
-        console.log(chapters)
         chapters.sort((a, b) => {
             return chapters.indexOf(+a.index) - chapters.indexOf(+b.index);
         });
@@ -67,7 +66,15 @@ const singleManga = async mangaId => {
             ...manga._doc,
             id: manga.id,
             title: manga._doc.title,
-            chapters: () => chapterLoader.loadMany.bind(manga._doc.chapters)
+            uploader: user.bind(this, manga.uploader),
+            author: manga._doc.author,
+            alias: manga._doc.alias,
+            categories: manga._doc.categories,
+            description: manga._doc.description,
+            image: manga._doc.image,
+            lastUpdated: manga._doc.lastUpdated,
+            thumbnail: manga._doc.thumbnail,
+            chapters: () => chapterLoader.loadMany(manga.chapters)
         }
     }
     catch (err) {
@@ -99,8 +106,8 @@ const user = async userId => {
             password: user._doc.password,
             DOB: user._doc.DOB,
             gender: user._doc.gender,
-            favoriteMangas: mangas.bind(this, ...user._doc.favoriteMangas),
-            uploadedMangas: mangas.bind(this, ...user._doc.uploadedMangas),
+            favoriteMangas: () => mangaLoader.loadMany(user.favoriteMangas), //mangas.bind(this, ...user._doc.favoriteMangas),
+            uploadedMangas: () => mangaLoader.loadMany(user.uploadedMangas),//mangas.bind(this, ...user._doc.uploadedMangas),
             role: user._doc.role
         }
     }
@@ -134,8 +141,8 @@ const transformManga = manga => {
         description: manga._doc.description,
         image: manga._doc.image,
         lastUpdated: manga._doc.lastUpdated,
-        img: manga._doc.img,
-        chapters: chapters.bind(this, ...manga.chapters)
+        thumbnail: manga._doc.thumbnail,
+        chapters: () => chapterLoader.loadMany(manga.chapters) //chapters.bind(this, ...manga.chapters)
     }
 }
 
