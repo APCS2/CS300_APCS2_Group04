@@ -22,6 +22,7 @@ mongoose.connect(`${mongoDB}`, {useNewUrlParser: true})
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, "MongoDB connection error"));
+db.collections.mangas.createIndex({ name: "text", description: "text" })
 mongoose.set('useFindAndModify', false);
 
 const app = express()

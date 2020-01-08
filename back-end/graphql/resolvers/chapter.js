@@ -4,7 +4,7 @@ const Chapter = require("../../models/chapter");
 const Manga = require("../../models/manga");
 const User = require('../../models/user')
 
-const { transformManga, transformChapter, arrayBufferToBase64, path } = require('./merge')
+const { transformManga, transformChapter, mangaUrl, directory } = require('./merge')
 
 module.exports = {
   uploadChapter: async ({ mangaId, chapterInput }, req) => {
@@ -43,6 +43,13 @@ module.exports = {
       if (!existingChapter) {
         throw new Error("Chapter does not exist");
       }
+      a = directory + aliasManga + "/" + index.toString() + "/";
+      let files = fs.readdirSync(a);
+      existingChapter.images = []
+      for(let i = 0; i < files.length; i++) {
+        existingChapter.images.push(mangaUrl + aliasManga + "/" + index.toString() + "/" + "page-" + (i + 1).toString() + ".jpg")
+      }
+      await existingChapter.save()
       return transformChapter(existingChapter);
     } catch (err) {
       throw err;

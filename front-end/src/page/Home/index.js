@@ -191,10 +191,10 @@ export default class DisabledTabs extends React.Component {
           success
           ? <Grid container xs={12} justify="center">
             <Grid container xs={10}>
-              <MangaArray arrayTitle="Treding" mangaArray={latest} />
+              <MangaArray arrayTitle="Treding" mangaArray={trending} />
             </Grid>
             <Grid container xs={10}>
-              <MangaArray arrayTitle="Latest" mangaArray={trending} />
+              <MangaArray arrayTitle="Latest" mangaArray={latest} />
             </Grid>
           </Grid>
           : <Grid container xs={10}>

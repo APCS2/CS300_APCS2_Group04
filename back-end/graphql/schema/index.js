@@ -102,8 +102,9 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
-        lastest: [Manga!]!
-        trending: [Manga!]!
+        searchManga(text: String!): [Manga!]
+        lastest: [Manga!]
+        trending: [Manga!]
         login(username: String!, password: String!): AuthData!
         summary(alias: String!): Manga!
         mangas: [Manga!]!

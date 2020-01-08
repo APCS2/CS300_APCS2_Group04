@@ -1,15 +1,16 @@
 const dataLoader = require("dataloader")
 const btoa = require('btoa')
+const path = require('path')
 
 const Manga = require('../../models/manga');
 const User = require('../../models/user');
 const Chapter = require('../../models/chapter');
+const mangaUrl = "localhost:8000/manga/"
+const directory = path.join(__dirname, "../../manga/");
 
 const mangaLoader = new dataLoader((mangaIds) => {
     return mangas(mangaIds);
 })
-
-const path = "./Manga/"
 
 const chapterLoader = new dataLoader((chapterIds) => {
     return chapters(chapterIds)
@@ -29,6 +30,7 @@ const chapters = async chapterIds => {
         chapters.sort((a, b) => {
             return chapters.indexOf(+a.index) - chapters.indexOf(+b.index);
         });
+        
         return chapters.map(chapter => {
             return transformChapter(chapter)
         })
@@ -74,7 +76,7 @@ const singleManga = async mangaId => {
             image: manga._doc.image,
             lastUpdated: manga._doc.lastUpdated,
             thumbnail: manga._doc.thumbnail,
-            chapters: () => chapterLoader.loadMany(manga.chapters)
+            chapters: chapters.bind(this, manga.chapters)
         }
     }
     catch (err) {
@@ -104,10 +106,10 @@ const user = async userId => {
             firstName: user._doc.firstName,
             lastName: user._doc.lastName,
             password: user._doc.password,
-            DOB: user._doc.DOB,
+            DOB: user._doc.DOB.toLocaleDateString(),
             gender: user._doc.gender,
-            favoriteMangas: () => mangaLoader.loadMany(user.favoriteMangas), //mangas.bind(this, ...user._doc.favoriteMangas),
-            uploadedMangas: () => mangaLoader.loadMany(user.uploadedMangas),//mangas.bind(this, ...user._doc.uploadedMangas),
+            favoriteMangas: mangas.bind(this, user.favoriteMangas), //mangas.bind(this, ...user._doc.favoriteMangas),
+            uploadedMangas: mangas.bind(this, user.uploadedMangas),//mangas.bind(this, ...user._doc.uploadedMangas),
             role: user._doc.role
         }
     }
@@ -140,21 +142,13 @@ const transformManga = manga => {
         categories: manga._doc.categories,
         description: manga._doc.description,
         image: manga._doc.image,
-        lastUpdated: manga._doc.lastUpdated,
+        lastUpdated: manga._doc.lastUpdated.toLocaleString(),
         thumbnail: manga._doc.thumbnail,
-        chapters: () => chapterLoader.loadMany(manga.chapters) //chapters.bind(this, ...manga.chapters)
+        chapters: chapters.bind(this, manga.chapters) //chapters.bind(this, ...manga.chapters)
     }
-}
-
-arrayBufferToBase64 = async (buffer) => {
-    var binary = '';
-    var bytes = await [].slice.call(new Uint8Array(buffer));
-  
-    bytes.forEach((b) => binary += String.fromCharCode(b));
-    return btoa(binary)
 }
 
 exports.transformChapter = transformChapter;
 exports.transformManga = transformManga;
-exports.arrayBufferToBase64 = arrayBufferToBase64;
-exports.path = path
+exports.mangaUrl = mangaUrl
+exports.directory = directory
