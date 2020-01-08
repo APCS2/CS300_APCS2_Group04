@@ -4,7 +4,7 @@ const btoa = require('btoa');
 const User = require("../../models/user");
 const Manga = require("../../models/manga");
 
-const { transformManga, transformChapter, arrayBufferToBase64, path } = require('./merge')
+const { transformManga, transformChapter, mangaUrl, directory } = require('./merge')
 
 const convertToSlug = async title => {
   return title
@@ -14,6 +14,19 @@ const convertToSlug = async title => {
 };
 
 module.exports = {
+  searchManga: async({ text }) =>{
+    try {
+      const mangas = await Manga.find({
+        title: { $regex: new RegExp(text, 'i') }
+      })
+      return mangas.map(manga => {
+        return transformManga(manga);
+      })
+    }
+    catch (err) {
+      throw err;
+    }
+  },
   lastest: async() => {
     try {
       const lastestMangas = await Manga.find({}).sort({ lastUpdated: -1 }).skip(0).limit(5)
@@ -42,6 +55,8 @@ module.exports = {
       if (!manga) {
         throw new Error("Manga does not exist");
       }
+      manga.thumbnail = mangaUrl + alias + "/" + alias + ".jpg";
+      await manga.save()
       return transformManga(manga);
     } catch (err) {
       throw err;
