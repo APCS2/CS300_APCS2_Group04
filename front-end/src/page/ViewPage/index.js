@@ -13,7 +13,7 @@ const { createApolloFetch } = require('apollo-fetch');
 
 const classes = {
   pageContainer: {
-    marginBottom: 50
+    marginBottom: 100
   }
 };
 
@@ -66,23 +66,23 @@ const dummyImg = [
 
 const dummyComment = [
   {
-    user: 'hentaiIsTheBest',
-    avatar: 'https://i.pinimg.com/236x/18/5a/4b/185a4be839f16d386e9aede4f508b0c5.jpg',
-    comment: 'Komi san is the best'
+    user: 'ElonMusk',
+    avatar: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    comment: 'Naruto is the best'
   },
   {
-    user: 'pornIsTheBest',
-    avatar: 'https://i.pinimg.com/236x/18/5a/4b/185a4be839f16d386e9aede4f508b0c5.jpg',
-    comment: 'Sauce pls'
+    user: 'MemeReviewer',
+    avatar: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    comment: 'Bleach is better'
   },
   {
-    user: 'Thinh_Lon',
-    avatar: 'https://i.pinimg.com/236x/18/5a/4b/185a4be839f16d386e9aede4f508b0c5.jpg',
-    comment: 'Fuck the guy above me'
+    user: 'ThinhAPCS',
+    avatar: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
+    comment: 'No you are wrong'
   },
   {
     user: 'CultureMan',
-    avatar: 'https://i.pinimg.com/236x/18/5a/4b/185a4be839f16d386e9aede4f508b0c5.jpg',
+    avatar: 'https://res.cloudinary.com/teepublic/image/private/s--2cQ6ELQC--/t_Preview/b_rgb:ffffff,c_limit,f_jpg,h_630,q_90,w_630/v1560566736/production/designs/5070067_3.jpg',
     comment: 'I see you are also a man of culture'
   }
 ]
