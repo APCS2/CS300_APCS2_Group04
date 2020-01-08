@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     marginTop: 19,
+    marginBottom: 30,
   },
   img: {
     width: '100%'
