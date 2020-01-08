@@ -98,6 +98,7 @@ const user = async userId => {
     
     try {
         const user = await userLoader.load(userId.toString())
+        console.log(user)
         return {
             ...user._doc,
             _id: user.id,
@@ -106,7 +107,7 @@ const user = async userId => {
             firstName: user._doc.firstName,
             lastName: user._doc.lastName,
             password: user._doc.password,
-            DOB: user._doc.DOB.toLocaleDateString(),
+            DOB: user._doc.DOB,
             gender: user._doc.gender,
             favoriteMangas: mangas.bind(this, user.favoriteMangas), //mangas.bind(this, ...user._doc.favoriteMangas),
             uploadedMangas: mangas.bind(this, user.uploadedMangas),//mangas.bind(this, ...user._doc.uploadedMangas),
