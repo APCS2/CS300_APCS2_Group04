@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Search from '@material-ui/icons/Search';
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -19,10 +19,15 @@ const useStyles = makeStyles(theme => ({
 export default function Header() {
   const [isLogin] = React.useState(false)
   const classes = useStyles();
+  let isSearching = false
   let history = useHistory();
   const headerHandler = (url) => {
     history.push(url)
   }
+  const searchHandler = (url) => {
+    history.push(url)
+  }
+  let search;
   return (
     <Grid container xs={12} justify="center">
       <Grid item xs={12}>
@@ -49,12 +54,22 @@ export default function Header() {
       <Grid xs={10} container alignItems="flex-start" justify="flex-end" direction="row">
         <Grid item xs={3}>
           <Input
+            placeholder="search manga"
             id="input-with-icon-adornment"
             fullWidth
             startAdornment={
               <InputAdornment position="start">
                 <Search />
               </InputAdornment>
+            }
+            onKeyPress={
+              e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  search = e.target.value
+                  searchHandler(`/search?query=${search}`)
+                }
+              } 
             }
           />
         </Grid>
