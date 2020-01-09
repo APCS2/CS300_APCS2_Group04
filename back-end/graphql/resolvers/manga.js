@@ -19,6 +19,9 @@ module.exports = {
       const mangas = await Manga.find({
         title: { $regex: new RegExp(text, 'i') }
       })
+      if (!mangas) {
+        throw new Error("Mangas does not exist")
+      }
       return mangas.map(manga => {
         return transformManga(manga);
       })
